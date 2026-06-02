@@ -17,6 +17,7 @@ function App() {
         <Route index path="" element={<HomePage />} />
         <Route path="/deliveries" element={<DeliveryPage />} />
         <Route path="/customers" element={<CustomerPage />} />
+        <Route path="/couriers" element={<div>Couriers</div>} />
       </Route>
     </Routes>
   );

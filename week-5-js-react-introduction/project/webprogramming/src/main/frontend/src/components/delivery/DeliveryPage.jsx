@@ -10,18 +10,10 @@ const DeliveryPage = () => {
   const [deliveries, setDeliveries] = useState([]);
   const [customers, setCustomers] = useState([]);
 
-  /* TODO:
-    Добави error state с useState
+  // TODO: Review
+  const [error, setError] = useState("");
 
-    При създаване на доставка:
-    - Ако не е избран customer:
-      - запази error със съобщение:
-        "Please select a customer before creating a delivery."
-      - НЕ се изпраща HTTP request
 
-    В UI:
-    - покажи error съобщението под select-а, ако error не е празен
-  */
 
   useEffect(() => {
     getDeliveries();
@@ -39,22 +31,25 @@ const DeliveryPage = () => {
     const response = await fetch(`${BASE_URL}/api/customers`);
     const customerCollection = await response.json();
     setCustomers(customerCollection);
+
     console.log(customerCollection);
   };
 
   const onCustomerSelected = (customerId) => {
     console.log(customerId);
     setCustomer(customerId);
+    setError("");
   };
 
   const onDeliveryCreate = async (event) => {
     event.preventDefault();
     console.log("State Customer: " + customer);
 
-    /* TODO: Добави валидация, ако не е избран клиент, да се запазва грешка със съобщение
-      "Please select a customer before creating a delivery."
-      и да НЕ се изпраща HTTP request
-    */
+    // TODO: Review
+    if (!customer) {
+      setError("Please select a customer before creating a delivery.");
+      return;
+    }
 
     const DELIVERY_API_CREATE_URL = `${BASE_URL}/api/deliveries/customer/${customer}`;
 
@@ -93,7 +88,8 @@ const DeliveryPage = () => {
               );
             })}
           </Form.Select>
-          {/*TODO: Показвай грешката под select-а, ако има такава. */}
+          {/* TODO: Review */}
+          {error && <div style={{color: "red"}}>{error}</div>}
         </Form.Group>
 
         <Button variant="primary" type="submit">
